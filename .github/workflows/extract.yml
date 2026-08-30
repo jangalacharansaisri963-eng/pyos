@@ -3,6 +3,9 @@ name: Extract pyos Zip
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   extract-and-clean:
     runs-on: ubuntu-latest
