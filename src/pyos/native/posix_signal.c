@@ -390,7 +390,7 @@ pyos_signal_queue(
         pyos_native_queue_signal(
             pid,
             signal_number,
-            value
+            (const void *)(long)value
         ) < 0
     ) {
         return pyos_signal_error(
@@ -609,6 +609,7 @@ pyos_signal_set_handler(
     int signal_number;
     PyObject *handler;
     PyObject *previous;
+    int ret;
 
     (void)self;
 
@@ -623,11 +624,19 @@ pyos_signal_set_handler(
         return NULL;
     }
 
-    previous =
+    ret =
         pyos_native_signal_set_handler(
             signal_number,
-            handler
+            (void (*)(int))handler
         );
+
+    if (ret < 0) {
+        return pyos_signal_error(
+            "signal"
+        );
+    }
+
+    previous = PyLong_FromLong(ret);
 
     if (previous == NULL) {
         return NULL;
