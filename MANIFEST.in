@@ -1,0 +1,2 @@
+recursive-include src/pyos/native *.c *.h
+include README.md LICENSE pyproject.toml setup.py
