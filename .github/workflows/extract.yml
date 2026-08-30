@@ -13,30 +13,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract zip and clean up archive
+      - name: Extract zip directly to root (no archive folder)
         run: |
           if [ -f "pyos.zip" ]; then
-            echo "Extracting pyos.zip..."
+            echo "Extracting pyos.zip directly to root..."
             mkdir -p temp_pyos
             unzip -q "pyos.zip" -d temp_pyos
             
-            mkdir -p pyos
-            
+            # If zip contains a pyos folder, take its contents and put to root
             if [ -d "temp_pyos/pyos" ]; then
-              cp -r temp_pyos/pyos/* pyos/
+              echo "Found nested pyos folder, extracting its contents to root"
+              cp -r temp_pyos/pyos/* ./
+              # Also copy hidden files if any
+              cp -r temp_pyos/pyos/.* ./ 2>/dev/null || true
             else
-              cp -r temp_pyos/* pyos/
+              echo "Flat zip, extracting all to root"
+              cp -r temp_pyos/* ./
+              cp -r temp_pyos/.* ./ 2>/dev/null || true
             fi
             
             rm -rf temp_pyos
             rm "pyos.zip"
-            echo "Done."
+            echo "Done - extracted to root"
+            ls -la | head -20
           else
-            echo "No zip found"
+            echo "No pyos.zip found"
           fi
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Extract pyos zip into folder and clean up"
+          commit_message: "Extract pyos zip directly to root"
           branch: main
