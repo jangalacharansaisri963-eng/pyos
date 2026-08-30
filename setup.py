@@ -32,7 +32,7 @@ long_description = (ROOT / "README.md").read_text(encoding="utf-8") if (ROOT / "
 
 setup(
     name="pyos-dan",
-    version="0.1.1",
+    version="0.1.2",
     description="Native POSIX operating system interface for Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
