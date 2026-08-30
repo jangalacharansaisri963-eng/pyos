@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyos-dan"
-version = "0.1.0"
+version = "0.1.1"
 description = "A zero-import Python operating-system interface"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -12,6 +12,10 @@ license = {text = "MIT"}
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+pyos = ["native/*.c", "native/*.h", "native/decoders/linux/*.c", "native/decoders/linux/*.h"]
