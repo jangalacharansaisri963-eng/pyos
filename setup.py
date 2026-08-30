@@ -25,8 +25,7 @@ ext = Extension(
         "src/pyos/native",
         "src/pyos/native/decoders/linux",
     ],
-    define_macros=[("PY_SSIZE_T_CLEAN", "1")],
-    extra_compile_args=["-Wall", "-Wextra", "-O3"],
+    extra_compile_args=["-O3"],
 )
 
 long_description = (ROOT / "README.md").read_text(encoding="utf-8") if (ROOT / "README.md").exists() else ""
