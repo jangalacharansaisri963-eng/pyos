@@ -1,0 +1,39 @@
+name: Extract pyos Zip
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract-and-clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract zip and clean up archive
+        run: |
+          if [ -f "pyos.zip" ]; then
+            echo "Extracting pyos.zip..."
+            mkdir -p temp_pyos
+            unzip -q "pyos.zip" -d temp_pyos
+            
+            mkdir -p pyos
+            
+            if [ -d "temp_pyos/pyos" ]; then
+              cp -r temp_pyos/pyos/* pyos/
+            else
+              cp -r temp_pyos/* pyos/
+            fi
+            
+            rm -rf temp_pyos
+            rm "pyos.zip"
+            echo "Done."
+          else
+            echo "No zip found"
+          fi
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Extract pyos zip into folder and clean up"
+          branch: main
